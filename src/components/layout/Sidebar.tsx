@@ -1,4 +1,4 @@
-import { Sun, Inbox, ListTodo, FolderKanban, StickyNote, Settings, LogOut, Zap } from 'lucide-react';
+import { Sun, Inbox, ListTodo, FolderKanban, StickyNote, Settings, Zap } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { getInitials, cn } from '@/lib/utils';
 import type { Page } from '@/types';
@@ -21,7 +21,7 @@ const navItems: { page: Page; label: string; icon: typeof Sun }[] = [
 
 export function Sidebar({ currentPage, onNavigate, onSignOut, onClose }: SidebarProps) {
   const { profile, user } = useAuth();
-  const displayName = profile?.name || user?.email || 'User';
+  const displayName = profile?.name || 'User';
 
   return (
     <div className="flex h-full flex-col bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800">
@@ -69,16 +69,7 @@ export function Sidebar({ currentPage, onNavigate, onSignOut, onClose }: Sidebar
             <p className="text-sm font-medium text-slate-900 dark:text-slate-100 truncate">
               {profile?.name || 'New user'}
             </p>
-            <p className="text-xs text-slate-400 dark:text-slate-500 truncate">{user?.email}</p>
           </div>
-          <button
-            onClick={onSignOut}
-            className="rounded-lg p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-300 transition-colors"
-            aria-label="Log out"
-            title="Log out"
-          >
-            <LogOut size={18} />
-          </button>
         </div>
       </div>
     </div>

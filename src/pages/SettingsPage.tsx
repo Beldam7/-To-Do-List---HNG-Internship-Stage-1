@@ -6,7 +6,6 @@ import {
   Palette,
   Bell,
   Bot,
-  LogOut,
   Sun,
   Moon,
   Monitor,
@@ -148,11 +147,10 @@ export function SettingsPage() {
         <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 space-y-4">
           <div className="flex items-center gap-4">
             <div className="flex h-14 w-14 items-center justify-center rounded-full bg-accent-100 dark:bg-accent-900/50 text-accent-700 dark:text-accent-300 text-lg font-semibold shrink-0">
-              {getInitials(name || user?.email || '?')}
+              {getInitials(name || '?')}
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-slate-900 dark:text-slate-100">{name || 'New user'}</p>
-              <p className="text-sm text-slate-400 dark:text-slate-500 truncate">{user?.email}</p>
             </div>
           </div>
           <Input
@@ -392,17 +390,6 @@ export function SettingsPage() {
         </div>
       </section>
 
-      {/* Account */}
-      <section className="mb-8">
-        <h2 className="flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wide mb-4">
-          <LogOut size={16} /> Account
-        </h2>
-        <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5">
-          <Button variant="danger" onClick={signOut}>
-            <LogOut size={16} /> Log out
-          </Button>
-        </div>
-      </section>
     </div>
   );
 }

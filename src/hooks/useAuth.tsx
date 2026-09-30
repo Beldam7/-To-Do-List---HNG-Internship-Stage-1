@@ -42,8 +42,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     let mounted = true;
 
-    supabase.auth.getSession().then(({ data: { session: initialSession } }) => {
+    supabase.auth.getSession().then(async ({ data: { session: initialSession } }) => {
       if (!mounted) return;
+      if (!initialSession) {
+        // No login screen: create a silent anonymous session for this browser.
+        const { error } = await supabase.auth.signInAnonymously();
+        if (error) console.error('Anonymous sign-in failed:', error.message);
+        // onAuthStateChange below receives the new session and finishes loading.
+        if (error) setLoading(false);
+        return;
+      }
       setSession(initialSession);
       setUser(initialSession?.user ?? null);
       if (initialSession?.user) {
@@ -53,8 +61,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
     });
 
-    const { data: authListener } = supabase.auth.onAuthStateChange((_event, newSession) => {
+    const { data: authListener } = supabase.auth.onAuthStateChange((event, newSession) => {
       (async () => {
+        if (!newSession && event === 'SIGNED_OUT') {
+          await supabase.auth.signInAnonymously();
+          return;
+        }
         setSession(newSession);
         setUser(newSession?.user ?? null);
         if (newSession?.user) {

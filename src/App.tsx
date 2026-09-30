@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { AuthProvider, useAuth } from '@/hooks/useAuth';
 import { AppLayout } from '@/components/layout/AppLayout';
-import { AuthPage } from '@/pages/AuthPage';
 import { OnboardingPage } from '@/pages/OnboardingPage';
 import { TodayPage } from '@/pages/TodayPage';
 import { InboxPage } from '@/pages/InboxPage';
@@ -10,11 +9,10 @@ import { ProjectsPage } from '@/pages/ProjectsPage';
 import { NotesPage } from '@/pages/NotesPage';
 import { SettingsPage } from '@/pages/SettingsPage';
 import { ToastContainer } from '@/components/ui/Toast';
-import type { Page, AuthView } from '@/types';
+import type { Page } from '@/types';
 
 function AppContent() {
   const { user, profile, loading, needsOnboarding } = useAuth();
-  const [authView, setAuthView] = useState<AuthView>('login');
   const [currentPage, setCurrentPage] = useState<Page>('today');
 
   // Initialize theme on mount
@@ -39,14 +37,17 @@ function AppContent() {
 
   if (!user) {
     return (
-      <>
-        <AuthPage
-          initialView={authView}
-          onAuthenticated={() => {}}
-          onSwitchView={setAuthView}
-        />
-        <ToastContainer />
-      </>
+      <div className="flex h-screen items-center justify-center bg-slate-50 dark:bg-slate-950 p-6">
+        <div className="max-w-sm text-center">
+          <p className="text-base font-semibold text-slate-900 dark:text-slate-100">
+            Couldn't start the app
+          </p>
+          <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
+            Anonymous sign-ins need to be enabled in your Supabase project
+            (Authentication → Sign In / Providers → Anonymous Sign-Ins), then reload the page.
+          </p>
+        </div>
+      </div>
     );
   }
 
